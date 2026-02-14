@@ -11,11 +11,16 @@ export default function rateLimit(req, res, next) {
     }
 
     const timestamps = requests.get(ip).filter(timestamp => now - timestamp < windowTime)
+
     timestamps.push(now)
+
     requests.set(ip, timestamps)
 
-    if(timestamps.length > limit){
-        return res.status(429).json({ error: 'Demasiadas peticiones, intentalo después.' })
+    // CORREGIDO
+    if (timestamps.length > maxRequests) {
+        return res.status(429).json({
+            error: 'Demasiadas peticiones, intentalo después.'
+        })
     }
 
     next()

@@ -2,7 +2,7 @@ import app from './app.js'
 
 const PORT = process.env.PORT || 3000
 
-process.on('unandledRejection', err => {
+process.on('unhandledRejection', err => {
     console.error('Unhandled Rejection:', err)
     process.exit(1)
 })
