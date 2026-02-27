@@ -1,0 +1,129 @@
+@baseUrl = http://localhost:3000/api/movies
+# Ejemplo con id de pelicula creada ejecutando el primer POST de crear película
+@movieId = 69a212c8d45c000301d2d80c
+@coverBoundary = boundary
+
+###
+# Listar todas las películas //OK
+GET {{baseUrl}}
+
+###
+# Listar películas filtrando por género (comedy) //OK
+GET {{baseUrl}}?genre=comedy
+
+###
+# Listar películas con paginación (page=1, limit=5) //OK
+GET {{baseUrl}}?page=1&limit=5
+
+###
+# Buscar por título (contiene 'matrix') //OK
+GET {{baseUrl}}?search=matrix
+
+###
+# Listar solo películas con copias disponibles //OK
+GET {{baseUrl}}/available
+
+###
+# Crear una película 1
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "The Matrix",
+  "director": "Lana Wachowski, Lilly Wachowski",
+  "year": 1999,
+  "genre": "scifi",
+  "copies": 5
+}
+
+###
+# Crear una película 2
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "The Godfather",
+  "director": "Francis Ford Coppola",
+  "year": 1972,
+  "genre": "drama",
+  "copies": 3
+}
+
+###
+# Crear una película 3
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "Superbad",
+  "director": "Greg Mottola",
+  "year": 2007,
+  "genre": "comedy",
+  "copies": 4
+}
+###
+#Crear película 4 sin existencias
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "The Matrix",
+  "director": "Lana Wachowski, Lilly Wachowski",
+  "year": 1999,
+  "genre": "scifi",
+  "copies": 0
+}
+
+
+###
+# Obtener una película por ID //OK
+GET {{baseUrl}}/{{movieId}}
+
+###
+# Actualizar película por ID //OK
+PUT {{baseUrl}}/{{movieId}}
+Content-Type: application/json
+
+{
+  "title": "The Matrix Reloaded",
+  "director": "Lana Wachowski, Lilly Wachowski",
+  "year": 2003,
+  "genre": "scifi",
+  "copies": 7,
+  "availableCopies": 7
+}
+
+###
+# Alquilar una película (decrementa availableCopies, incrementa timesRented) //OK
+
+###
+# Devolver una película (incrementa availableCopies sin superar copies) //OK
+PATCH {{baseUrl}}/{{movieId}}/return
+
+###
+# Probar alquiler cuando no hay copias disponibles //OK
+PATCH {{baseUrl}}/{{movieId}}/rent
+
+###
+# Top 5 películas más alquiladas //OK
+GET {{baseUrl}}/stats/top
+
+###
+# Subir carátula a una película //OK
+PATCH {{baseUrl}}/{{movieId}}/cover
+Content-Type: multipart/form-data; boundary={{coverBoundary}}
+
+--{{coverBoundary}}
+Content-Disposition: form-data; name="cover"; filename="test_cover.jpg"
+Content-Type: image/jpeg
+
+< ./test-cover.jpg
+--{{coverBoundary}}--
+
+###
+# Obtener carátula de una película //OK
+GET {{baseUrl}}/{{movieId}}/cover
+
+###
+# Eliminar película por ID //OK
+DELETE {{baseUrl}}/{{movieId}}

@@ -5,7 +5,7 @@ const currentYear = new Date().getFullYear();
 const GENRES = ['action', 'comedy', 'drama', 'horror', 'scifi'];
 
 const movieSchema = new mongoose.Schema({
-    title: { type: String, required: true, minlenght: 2, trim: true },
+    title: { type: String, required: true, minlength: 2, trim: true },
     director: { type: String, required: true, trim: true },
     year: { type: Number, min: 1888, max: currentYear, required: true},
     genre: { type: String, required: true, enum: GENRES},
@@ -18,15 +18,15 @@ const movieSchema = new mongoose.Schema({
 });
 
 // Middleware para asegurar que availableCopies se inicialice correctamente y no exceda el número de copias
-movieSchema.pre('save', function(next){
-    if(this.isNew && (this.availableCopies === undefined || this.availableCopies === null)){
-        this.availableCopies = this.copies;
-    }
+movieSchema.pre('save', async function() {  // <-- async, sin 'next'
+  if(this.isNew && (this.availableCopies === undefined || this.availableCopies === null)){
+    this.availableCopies = this.copies;
+  }
 
-    if(this.availableCopies > this.copies){
-        this.availableCopies = this.copies;
-    }
-    next();
+  if(this.availableCopies > this.copies){
+    this.availableCopies = this.copies;
+  }
+  
 });
 
 const Movie = mongoose.model('Movie', movieSchema);
