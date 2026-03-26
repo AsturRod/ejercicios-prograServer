@@ -16,6 +16,22 @@ export const listPublished = async (req, res) => {
   }
 };
 
+export const getPodcast = async (req, res) => {
+  try {
+    const podcast = await Podcast.findById(req.params.id).populate(
+      'author',
+      'name email'
+    );
+    if (!podcast || (!podcast.published && req.user?.role !== 'admin')) {
+      return res.status(404).json({ message: 'Podcast not found' });
+    }
+    return res.status(200).json(podcast);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Error getting podcast' });
+  }
+};
+
 export const createPodcast = async (req, res) => {
   try {
     const data = req.body;

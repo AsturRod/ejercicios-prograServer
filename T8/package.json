@@ -7,13 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "dev" : "nodemon src/index.js",
+    "dev": "nodemon src/index.js",
     "test": "NODE_ENV=test jest --runInBand"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",   
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",

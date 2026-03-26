@@ -1,6 +1,6 @@
 const allowedCategories = ['Technology', 'Health', 'Business', 'Education', 'Entertainment'];
 
-export const ValidateCreatePodcast = (req, res, next) => {
+export const validateCreatePodcast = (req, res, next) => {
 
     const { title, description, category, duration } = req.body;
 
